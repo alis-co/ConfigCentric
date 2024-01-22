@@ -1,3 +1,7 @@
+using ConfigCentric.Api.AppService;
+using ConfigCentric.Api.Repository;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(ConfigValueAppService).Assembly);
+builder.Services.AddScoped<ProjectAppService>();
+builder.Services.AddScoped<EnvironmentAppService>();
+builder.Services.AddScoped<ConfigValueAppService>();
+builder.Services.AddDbContext<ConfigCentricDbContext>(b =>
+            {
+                string connectionString = builder.Configuration.GetValue<string>("ConnectionStrings");
+                b.UseNpgsql(connectionString);
+            });
 
 var app = builder.Build();
 
