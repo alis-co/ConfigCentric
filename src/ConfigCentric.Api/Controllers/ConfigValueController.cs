@@ -17,14 +17,6 @@ public class ConfigValueController : Controller
         this.mapper = mapper;
     }
 
-    [HttpPost]
-    public async Task<ConfigValueDto> Create([FromBody] CreateConfigValueInput input)
-    {
-        var project = await service.Create(input.Name, input.Value, input.EnvironmentId);
-        var dto = mapper.Map<ConfigValueDto>(project);
-        return dto;
-    }
-
     [HttpPut]
     [Route("{id:guid}")]
     public async Task<ConfigValueDto> Update(Guid id, [FromBody] UpdateConfigValueInput input)
@@ -39,10 +31,10 @@ public class ConfigValueController : Controller
         await service.Delete(id);
     }
     [HttpGet]
-    public async Task<ConfigValueSummaryDto> GetAllByEnvironment(Guid environmentId)
+    public async Task<List<ConfigValueSummaryDto>> GetAllByEnvironment(Guid environmentId)
     {
-        var configValues = service.GetAllByEnvironment(environmentId);
-        var dto = mapper.Map<ConfigValueSummaryDto>(configValues);
+        var configValues = await service.GetAllByEnvironment(environmentId);
+        var dto = mapper.Map<List<ConfigValueSummaryDto>>(configValues);
         return dto;
     }
 }

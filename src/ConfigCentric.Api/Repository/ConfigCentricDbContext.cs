@@ -9,10 +9,17 @@ public class ConfigCentricDbContext : DbContext
     {
 
     }
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // modelBuilder.Entity<Project>()
+        //     .HasMany(o=> o.Environments)
+        //     .WithOne(O=> O.Project);
 
-    // }
+        // modelBuilder.Entity<Project>()
+        //     .Property(x=> x.Environments)
+        //     .HasField("environment");
+        //     // .UsePropertyAccessMode(PropertyAccessMode.Field);      
+    }
 
     public DbSet<Project> Projects { get; set; }
     public DbSet<Models.Environment> Environments { get; set; }

@@ -2,6 +2,10 @@ namespace ConfigCentric.Api.Models;
 
 public class Environment : Entity
 {
+    protected Environment()
+    {
+        
+    }
     public Environment(string name, Project project)
     {
         Name = name;

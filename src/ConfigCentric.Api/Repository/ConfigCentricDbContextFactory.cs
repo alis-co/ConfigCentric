@@ -8,13 +8,13 @@ namespace ConfigCentric.Api.Repository;
     {
          public ConfigCentricDbContext CreateDbContext(string[] args)
     {
-        // string cs = Environment.GetEnvironmentVariable("SAMANTHA_CONNECTIONSTRING");
-        string cs = ""
+        string cs = Environment.GetEnvironmentVariable("CC_CONNECTIONSTRING");
+    
 ;
 
 
         if (cs == null)
-            throw new InvalidOperationException("Provide connection string via SAMANTHA_CONNECTIONSTRING env var");
+            throw new InvalidOperationException("Provide connection string via CC_CONNECTIONSTRING env var");
 
         DbContextOptions<ConfigCentricDbContext> options
             = new DbContextOptionsBuilder<ConfigCentricDbContext>()

@@ -2,6 +2,8 @@ using ConfigCentric.Api.Extensions;
 using ConfigCentric.Api.Models;
 using ConfigCentric.Api.Repository;
 using Microsoft.EntityFrameworkCore;
+using Environment = ConfigCentric.Api.Models.Environment;
+
 
 namespace ConfigCentric.Api.AppService;
 public class ProjectAppService
@@ -20,15 +22,20 @@ public class ProjectAppService
         await dbContext.SaveChangesAsync();
         return project;
     }
-    public async Task<Project> Update(Guid id, string name, Guid? environmentId)
+    public async Task<Project> Update(Guid id, string name)
     {
         var project = await dbContext.Projects.FindModelAsync(id);
-        if (environmentId.HasValue)
-        {
-            var environment = await dbContext.Environments.FindModelAsync(environmentId.Value);
-            project.AddEnvironment(environment);
-        }
         project.Name = name;
+        await dbContext.SaveChangesAsync();
+        return project;
+    }
+    public async Task<Project> AddEnvironment(string name, Guid projectId)
+    {
+        var project = await dbContext.Projects
+            .Include(x=> x.Environments)
+            .FindModelAsync(projectId);
+        var environment = new Environment(name, project);
+        project.AddEnvironment(environment);
         await dbContext.SaveChangesAsync();
         return project;
     }

@@ -13,17 +13,11 @@ public class ConfigValueAppService
         this.dbContext = dbContext;
     }
 
-    public async Task<ConfigValue> Create(string name, string value, Guid environmentId)
-    {
-        var environment = await dbContext.Environments.FindModelAsync(environmentId);
-        var configValue = new ConfigValue(name, value, environment);
-        await dbContext.ConfigValues.AddAsync(configValue);
-        await dbContext.SaveChangesAsync();
-        return configValue;
-    }
     public async Task<ConfigValue> Update(Guid id, string name, string value)
     {
-        var configValue = await dbContext.ConfigValues.FindModelAsync(id);
+        var configValue = await dbContext.ConfigValues
+            .Include(o=> o.Environment)
+            .FindModelAsync(id);
         configValue.Name = name;
         configValue.Value = value;
         await dbContext.SaveChangesAsync();

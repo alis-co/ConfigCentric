@@ -19,30 +19,40 @@ public class ProjectController : Controller
         this.mapper = mapper;
     }
     [HttpPost]
-    public ProjectDto Create([FromBody] CreateProjectInput input)
+    public async Task<ProjectDto> Create([FromBody] CreateProjectInput input)
     {
-        var project = service.Create(input.Name);
+        var project = await service.Create(input.Name);
         var dto = mapper.Map<ProjectDto>(project);
         return dto;
     }
     [HttpPut]
     [Route("{id:guid}")]
-    public ProjectDto Update(Guid id, string name, Guid? environmentId)
+    public async Task<ProjectDto> Update(Guid id, [FromBody] UpdateProjectInput input)
     {
-        var project = service.Update(id, name, environmentId);
+        var project = await service.Update(id, input.Name);
         var dto = mapper.Map<ProjectDto>(project);
         return dto;
     }
+    [HttpPut]
+    [Route("{id:guid}/environments/add")]
+    public async Task<ProjectDto> AddEnvironment(Guid id, [FromBody] CreateEnvironmentInput input)
+    {
+        var project = await service.AddEnvironment(input.Name, id);
+        var dto = mapper.Map<ProjectDto>(project);
+        return dto;
+    }
+
     [HttpDelete]
+    [Route("{id:guid}")]
     public async Task Delete(Guid id)
     {
         await service.Delete(id);
     }
     [HttpGet]
-    public async Task<ProjectSummaryDto> GetAllByProject()
+    public async Task<List<ProjectSummaryDto>> GetAll()
     {
-        var projects = service.GelAll();
-        var dto = mapper.Map<ProjectSummaryDto>(projects);
+        var projects = await service.GelAll();
+        var dto = mapper.Map<List<ProjectSummaryDto>>(projects);
         return dto;
     }
 }

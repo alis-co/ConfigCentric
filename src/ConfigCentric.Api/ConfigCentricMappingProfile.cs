@@ -14,5 +14,6 @@ public class ConfigCentricMappingProfile : Profile
         CreateMap<ConfigValueSummary, ConfigValueSummaryDto>();
         CreateMap<EnvironmentSummary, EnvironmentSummaryDto>();
         CreateMap<ProjectSummary, ProjectSummaryDto>();
+        // CreateMap<List<Project>, List<ProjectDto>>();
     }
 }

@@ -1,6 +1,10 @@
 namespace ConfigCentric.Api.Models;
 public class ConfigValue : Entity
 {
+    protected ConfigValue()
+    {
+        
+    }
     public ConfigValue(string name, string value, Environment environment)
     {
         Name = name;

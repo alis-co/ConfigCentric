@@ -1,7 +1,9 @@
 namespace ConfigCentric.Api.Dto;
 
-public class CreateEnvironmentInput
+public class UpdateProjectInput
 {
     public string Name { get; set; }
 }
+
+
 

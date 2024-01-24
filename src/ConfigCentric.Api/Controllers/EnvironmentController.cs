@@ -2,6 +2,7 @@ using AutoMapper;
 using ConfigCentric.Api.AppService;
 using ConfigCentric.Api.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace ConfigCentric.Api.Controllers;
 [ApiController]
@@ -17,19 +18,11 @@ public class EnvironmentController : Controller
         this.mapper = mapper;
     }
 
-    [HttpPost]
-    public EnvironmentDto Create([FromBody] CreateEnvironmentInput input)
-    {
-        var project = service.Create(input.Name, input.ProjectId);
-        var dto = mapper.Map<EnvironmentDto>(project);
-        return dto;
-    }
-
     [HttpPut]
     [Route("{id:guid}")]
-    public EnvironmentDto Update(Guid id, [FromBody] UpdateEnvironmentInput input)
+    public async Task<EnvironmentDto> Update(Guid id, [FromBody] UpdateEnvironmentInput input)
     {
-        var project = service.Update(id, input.Name);
+        var project = await service.Update(id, input.Name);
         var dto = mapper.Map<EnvironmentDto>(project);
         return dto;
     }
@@ -39,10 +32,19 @@ public class EnvironmentController : Controller
         await service.Delete(id);
     }
     [HttpGet]
-    public async Task<EnvironmentSummaryDto> GetAllByProject(Guid projectId)
+    public async Task<List<EnvironmentSummaryDto>> GetAllByProject(Guid projectId)
     {
-        var environments = service.GetAllByProject(projectId);
-        var dto = mapper.Map<EnvironmentSummaryDto>(environments);
+        var environments = await service.GetAllByProject(projectId);
+        var dto = mapper.Map<List<EnvironmentSummaryDto>>(environments);
+        return dto;
+    }
+
+    [HttpPut]
+    [Route("{id:guid}/configs/add")]
+    public async Task<ConfigValueDto> AddConfig(Guid id,[FromBody] CreateConfigValueInput input)
+    {
+        var project = await service.AddConfig(input.Name, input.Value, id);
+        var dto = mapper.Map<ConfigValueDto>(project);
         return dto;
     }
 }

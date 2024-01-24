@@ -4,6 +4,6 @@ public class ProjectDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public Guid EnvironmentId { get; set; }
+    public List<EnvironmentDto> Environments { get; set; }
 }
 
