@@ -18,6 +18,13 @@ public class ConfigValueAppService
         var configValue = await dbContext.ConfigValues
             .Include(o => o.Environment)
             .FindModelAsync(id);
+
+        if (dbContext.ConfigValues.Any(
+                x => x.Name.ToLower() == name.ToLower()
+                && x.Id != configValue.Id 
+                && x.Environment.Id == configValue.Environment.Id))
+            throw new Exception($"The name: {name} is already used, enter another name.");
+
         configValue.Name = name;
         configValue.Value = value;
         configValue.Description = description;

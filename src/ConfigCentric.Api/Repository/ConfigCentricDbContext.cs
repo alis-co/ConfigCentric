@@ -1,5 +1,7 @@
 using ConfigCentric.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using Environment = ConfigCentric.Api.Models.Environment;
+
 
 namespace ConfigCentric.Api.Repository;
 public class ConfigCentricDbContext : DbContext
@@ -11,14 +13,9 @@ public class ConfigCentricDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<Project>()
-        //     .HasMany(o=> o.Environments)
-        //     .WithOne(O=> O.Project);
-
-        // modelBuilder.Entity<Project>()
-        //     .Property(x=> x.Environments)
-        //     .HasField("environment");
-        //     // .UsePropertyAccessMode(PropertyAccessMode.Field);      
+        modelBuilder.Entity<Project>().HasIndex(x=> x.Name).IsUnique();
+        modelBuilder.Entity<Environment>().HasIndex("Name","ProjectId").IsUnique();
+        modelBuilder.Entity<ConfigValue>().HasIndex("Name","EnvironmentId").IsUnique();
     }
 
     public DbSet<Project> Projects { get; set; }
