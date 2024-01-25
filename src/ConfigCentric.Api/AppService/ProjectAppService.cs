@@ -15,26 +15,34 @@ public class ProjectAppService
         this.dbContext = dbContext;
     }
 
-    public async Task<Project> Create(string name)
+    public async Task<Project> Create(string name, string? description)
     {
         var project = new Project(name);
+        if (description != null)
+            project.Description = description;
+
         await dbContext.Projects.AddAsync(project);
         await dbContext.SaveChangesAsync();
         return project;
     }
-    public async Task<Project> Update(Guid id, string name)
+    public async Task<Project> Update(Guid id, string name, string? description)
     {
         var project = await dbContext.Projects.FindModelAsync(id);
         project.Name = name;
+        project.Description = description;
+
         await dbContext.SaveChangesAsync();
         return project;
     }
-    public async Task<Project> AddEnvironment(string name, Guid projectId)
+    public async Task<Project> AddEnvironment(string name, Guid projectId, string? description)
     {
         var project = await dbContext.Projects
-            .Include(x=> x.Environments)
+            .Include(x => x.Environments)
             .FindModelAsync(projectId);
         var environment = new Environment(name, project);
+        if (description != null)
+            environment.Description = description;
+
         project.AddEnvironment(environment);
         await dbContext.SaveChangesAsync();
         return project;
@@ -49,7 +57,7 @@ public class ProjectAppService
     {
         var projects = await dbContext.Projects
             .Include(x => x.Environments)
-            .Select(x => new ProjectSummary(x.Name, x.Id))
+            .Select(x => new ProjectSummary(x.Name, x.Description, x.Id, x.CreatedAt))
             .ToListAsync();
 
         return projects;

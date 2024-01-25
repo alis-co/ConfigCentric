@@ -13,13 +13,15 @@ public class ConfigValueAppService
         this.dbContext = dbContext;
     }
 
-    public async Task<ConfigValue> Update(Guid id, string name, string value)
+    public async Task<ConfigValue> Update(Guid id, string name, string value, string? description)
     {
         var configValue = await dbContext.ConfigValues
-            .Include(o=> o.Environment)
+            .Include(o => o.Environment)
             .FindModelAsync(id);
         configValue.Name = name;
         configValue.Value = value;
+        configValue.Description = description;
+
         await dbContext.SaveChangesAsync();
         return configValue;
     }
@@ -33,8 +35,8 @@ public class ConfigValueAppService
     {
         var environments = await dbContext.ConfigValues
             .Include(x => x.Environment)
-            .Where(o=> o.Environment.Id == environmentId)
-            .Select(x => new ConfigValueSummary(x.Name, x.Value ,x.Id))
+            .Where(o => o.Environment.Id == environmentId)
+            .Select(x => new ConfigValueSummary(x.Name, x.Value, x.Description, x.Id, x.CreatedAt))
             .ToListAsync();
         return environments;
     }

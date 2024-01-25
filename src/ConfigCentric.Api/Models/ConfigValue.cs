@@ -3,7 +3,7 @@ public class ConfigValue : Entity
 {
     protected ConfigValue()
     {
-        
+
     }
     public ConfigValue(string name, string value, Environment environment)
     {
@@ -14,5 +14,6 @@ public class ConfigValue : Entity
 
     public string Name {get; set;}
     public string Value {get; set;}
+    public string? Description { get; set; }
     public Environment Environment { get; private set; }
 }

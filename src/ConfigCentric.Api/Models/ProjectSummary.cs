@@ -1,3 +1,7 @@
 namespace ConfigCentric.Api.Models;
 
-public record ProjectSummary(string Name, Guid Id);
+public record ProjectSummary(
+    string Name, 
+    string? Description, 
+    Guid Id,
+    DateTimeOffset CreatedAt);

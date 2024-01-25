@@ -21,7 +21,7 @@ public class ConfigValueController : Controller
     [Route("{id:guid}")]
     public async Task<ConfigValueDto> Update(Guid id, [FromBody] UpdateConfigValueInput input)
     {
-        var project = await service.Update(id, input.Name, input.Value);
+        var project = await service.Update(id, input.Name, input.Value, input.Description);
         var dto = mapper.Map<ConfigValueDto>(project);
         return dto;
     }
