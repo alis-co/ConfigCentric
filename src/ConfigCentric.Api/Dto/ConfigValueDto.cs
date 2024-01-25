@@ -6,6 +6,8 @@ public class ConfigValueDto
     public string Name { get; set; }
     public string Value { get; set; }
     public Guid EnvironmentId { get; private set; }
+    public string? Description { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 }
 
 

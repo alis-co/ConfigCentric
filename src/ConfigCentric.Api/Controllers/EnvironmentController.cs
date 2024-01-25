@@ -22,7 +22,7 @@ public class EnvironmentController : Controller
     [Route("{id:guid}")]
     public async Task<EnvironmentDto> Update(Guid id, [FromBody] UpdateEnvironmentInput input)
     {
-        var project = await service.Update(id, input.Name);
+        var project = await service.Update(id, input.Name, input.Description);
         var dto = mapper.Map<EnvironmentDto>(project);
         return dto;
     }
@@ -43,7 +43,7 @@ public class EnvironmentController : Controller
     [Route("{id:guid}/configs/add")]
     public async Task<ConfigValueDto> AddConfig(Guid id,[FromBody] CreateConfigValueInput input)
     {
-        var project = await service.AddConfig(input.Name, input.Value, id);
+        var project = await service.AddConfig(input.Name, input.Value, id, input.Description);
         var dto = mapper.Map<ConfigValueDto>(project);
         return dto;
     }

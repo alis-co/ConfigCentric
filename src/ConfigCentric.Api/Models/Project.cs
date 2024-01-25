@@ -16,6 +16,7 @@ public class Project : Entity
     private List<Environment> environments;
 
     public string Name { get; set; }
+    public string? Description { get; set; }
     public List<Environment> Environments
     {
         get

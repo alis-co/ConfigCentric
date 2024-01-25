@@ -21,7 +21,7 @@ public class ProjectController : Controller
     [HttpPost]
     public async Task<ProjectDto> Create([FromBody] CreateProjectInput input)
     {
-        var project = await service.Create(input.Name);
+        var project = await service.Create(input.Name, input.Description);
         var dto = mapper.Map<ProjectDto>(project);
         return dto;
     }
@@ -29,7 +29,7 @@ public class ProjectController : Controller
     [Route("{id:guid}")]
     public async Task<ProjectDto> Update(Guid id, [FromBody] UpdateProjectInput input)
     {
-        var project = await service.Update(id, input.Name);
+        var project = await service.Update(id, input.Name, input.Description);
         var dto = mapper.Map<ProjectDto>(project);
         return dto;
     }
@@ -37,7 +37,7 @@ public class ProjectController : Controller
     [Route("{id:guid}/environments/add")]
     public async Task<ProjectDto> AddEnvironment(Guid id, [FromBody] CreateEnvironmentInput input)
     {
-        var project = await service.AddEnvironment(input.Name, id);
+        var project = await service.AddEnvironment(input.Name, id, input.Description);
         var dto = mapper.Map<ProjectDto>(project);
         return dto;
     }

@@ -4,7 +4,7 @@ public class Environment : Entity
 {
     protected Environment()
     {
-        
+
     }
     public Environment(string name, Project project)
     {
@@ -14,6 +14,7 @@ public class Environment : Entity
 
     public string Name { get; set; }
     public Project Project {get; private set;}
+    public string? Description { get; set; }
     public List<ConfigValue> ConfigValues { get; set; }
 }
 
