@@ -19,6 +19,13 @@ public class EnvironmentAppService
         var environment = await dbContext.Environments
             .Include(o => o.Project)
             .FindModelAsync(id);
+
+        if (dbContext.Environments.Any(
+                x => x.Name.ToLower() == name.ToLower() 
+                && x.Id != environment.Id 
+                && x.Project.Id == environment.Project.Id))
+                throw new Exception($"The name: {name} is already used, enter another name.");
+                
         environment.Name = name;
         environment.Description = description;
 
@@ -43,7 +50,13 @@ public class EnvironmentAppService
 
     public async Task<ConfigValue> AddConfig(string name, string value, Guid environmentId, string? description)
     {
-        var environment = await dbContext.Environments.FindModelAsync(environmentId);
+        var environment = await dbContext.Environments
+            .Include(p=> p.ConfigValues)
+            .FindModelAsync(environmentId);
+
+        if (environment.ConfigValues.Any(x => x.Name.ToLower() == name.ToLower()))
+            throw new Exception($"The name: {name} is already used, enter another name.");
+
         var configValue = new ConfigValue(name, value, environment);
         if (description != null)
             configValue.Description = description;
