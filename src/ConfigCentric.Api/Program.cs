@@ -20,7 +20,24 @@ builder.Services.AddDbContext<ConfigCentricDbContext>(b =>
                 b.UseNpgsql(connectionString);
             });
 
+var  AllOrigins = "_AllOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllOrigins,
+                      builder =>
+                      {
+                          builder.WithOrigins("*")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowAnyOrigin();
+                      });
+});            
+
+
 var app = builder.Build();
+
+app.UseCors(AllOrigins);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
