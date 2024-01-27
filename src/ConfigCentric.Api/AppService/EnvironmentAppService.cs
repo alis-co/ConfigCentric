@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Environment = ConfigCentric.Api.Models.Environment;
 
 namespace ConfigCentric.Api.AppService;
-public class EnvironmentAppService
+public class EnvironmentAppService : ServiceBase<Environment>
 {
-    private readonly ConfigCentricDbContext dbContext;
 
-    public EnvironmentAppService(ConfigCentricDbContext dbContext)
+    public EnvironmentAppService(ConfigCentricDbContext dbContext) : base(dbContext)
     {
-        this.dbContext = dbContext;
+
     }
 
     public async Task<Environment> Update(Guid id, string name, string? description)
@@ -31,12 +30,6 @@ public class EnvironmentAppService
 
         await dbContext.SaveChangesAsync();
         return environment;
-    }
-    public async Task Delete(Guid id)
-    {
-        var environment = await dbContext.Environments.FindModelAsync(id);
-        dbContext.Environments.Remove(environment);
-        await dbContext.SaveChangesAsync();
     }
     public async Task<List<EnvironmentSummary>> GetAllByProject(Guid projectId)
     {
