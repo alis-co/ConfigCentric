@@ -4,13 +4,11 @@ using ConfigCentric.Api.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConfigCentric.Api.AppService;
-public class ConfigValueAppService
+public class ConfigValueAppService : ServiceBase<ConfigValue>
 {
-    private readonly ConfigCentricDbContext dbContext;
-
-    public ConfigValueAppService(ConfigCentricDbContext dbContext)
+    public ConfigValueAppService(ConfigCentricDbContext dbContext) : base(dbContext)
     {
-        this.dbContext = dbContext;
+  
     }
 
     public async Task<ConfigValue> Update(Guid id, string name, string value, string? description)
@@ -31,12 +29,6 @@ public class ConfigValueAppService
 
         await dbContext.SaveChangesAsync();
         return configValue;
-    }
-    public async Task Delete(Guid id)
-    {
-        var configValue = await dbContext.ConfigValues.FindModelAsync(id);
-        dbContext.ConfigValues.Remove(configValue);
-        await dbContext.SaveChangesAsync();
     }
     public async Task<List<ConfigValueSummary>> GetAllByEnvironment(Guid environmentId)
     {

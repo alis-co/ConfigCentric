@@ -9,4 +9,12 @@ public class Entity
 
     public Guid Id { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
+
+    public void Delete()
+    {
+        IsDeleted = true;
+        DeletedAt = DateTimeOffset.UtcNow;
+    }
 }

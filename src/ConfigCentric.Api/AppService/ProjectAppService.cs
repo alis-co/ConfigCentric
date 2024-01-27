@@ -6,13 +6,12 @@ using Environment = ConfigCentric.Api.Models.Environment;
 
 
 namespace ConfigCentric.Api.AppService;
-public class ProjectAppService
+public class ProjectAppService : ServiceBase<Project>
 {
-    private readonly ConfigCentricDbContext dbContext;
 
-    public ProjectAppService(ConfigCentricDbContext dbContext)
+    public ProjectAppService(ConfigCentricDbContext dbContext) : base(dbContext)
     {
-        this.dbContext = dbContext;
+
     }
 
     public async Task<Project> Create(string name, string? description)
@@ -30,7 +29,7 @@ public class ProjectAppService
     public async Task<Project> Update(Guid id, string name, string? description)
     {
         var project = await dbContext.Projects.FindModelAsync(id);
-        if (dbContext.Projects.Any(x => x.Name.ToLower() == name.ToLower()&& x.Id != id))
+        if (dbContext.Projects.Any(x => x.Name.ToLower() == name.ToLower() && x.Id != id))
             throw new Exception($"The name: {name} is already used, enter another name.");
         project.Name = name;
         project.Description = description;
@@ -55,12 +54,6 @@ public class ProjectAppService
         project.AddEnvironment(environment);
         await dbContext.SaveChangesAsync();
         return project;
-    }
-    public async Task Delete(Guid id)
-    {
-        var project = await dbContext.Projects.FindModelAsync(id);
-        dbContext.Projects.Remove(project);
-        await dbContext.SaveChangesAsync();
     }
     public async Task<List<ProjectSummary>> GelAll()
     {
