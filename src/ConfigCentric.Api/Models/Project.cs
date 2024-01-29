@@ -11,18 +11,20 @@ public class Project : Entity
     {
         Name = name;
         environments = new List<Environment>();
+        ApiKey = CreateApiKey();
     }
 
     private List<Environment> environments;
 
     public string Name { get; set; }
     public string? Description { get; set; }
+    public string ApiKey { get; set; }
     public List<Environment> Environments
     {
         get
         {
             if (environments == null)
-                environments = new List<Environment>()  ;
+                environments = new List<Environment>();
             return environments;
         }
     }
@@ -30,5 +32,13 @@ public class Project : Entity
     public void AddEnvironment(Environment environment)
     {
         environments.Add(environment);
+    }
+    public string CreateApiKey()
+    {
+        var apiKey = Guid.NewGuid()
+            .ToString()
+            .Replace("-", string.Empty);
+
+        return apiKey;
     }
 }
