@@ -8,5 +8,6 @@ public class ProjectConfiguration
     public override void ConfigureDerived(EntityTypeBuilder<Project> builder)
     {
         builder.HasIndex(x => x.Name).IsUnique();
+        builder.HasIndex(p=> p.ApiKey).IsUnique();
     }
 }

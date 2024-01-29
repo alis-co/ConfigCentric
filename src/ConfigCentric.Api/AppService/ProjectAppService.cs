@@ -59,7 +59,7 @@ public class ProjectAppService : ServiceBase<Project>
     {
         var projects = await dbContext.Projects
             .Include(x => x.Environments)
-            .Select(x => new ProjectSummary(x.Name, x.Description, x.Id, x.CreatedAt))
+            .Select(x => new ProjectSummary(x.Name, x.Description, x.Id, x.CreatedAt, x.ApiKey))
             .ToListAsync();
 
         return projects;

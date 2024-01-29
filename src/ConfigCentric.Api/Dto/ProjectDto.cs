@@ -7,5 +7,6 @@ public class ProjectDto
     public List<EnvironmentDto> Environments { get; set; }
     public string? Description { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+     public string ApiKey { get; set; }
 }
 
