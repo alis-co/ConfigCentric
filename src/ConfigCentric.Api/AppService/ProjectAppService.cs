@@ -64,5 +64,19 @@ public class ProjectAppService : ServiceBase<Project>
 
         return projects;
     }
+    public async Task<List<ConfigValue>> ResolveConfigs(string apiKey, string environmentName)
+    {
+        var project = await dbContext.Projects
+        .Include(x => x.Environments)
+        .ThenInclude(x=> x.ConfigValues)
+        .FirstOrDefaultAsync(o=> o.ApiKey.ToLower() == apiKey.ToLower())??
+            throw new Exception($"project with apiKey: {apiKey} not found");
+
+        var environment = project.Environments
+            .FirstOrDefault(p => p.Name.ToLower() == environmentName.ToLower())??
+            throw new Exception($"environment with name: {environmentName} not found");
+        
+        return environment.ConfigValues;
+    }
 }
 

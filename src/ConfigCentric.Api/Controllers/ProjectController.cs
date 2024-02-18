@@ -48,11 +48,21 @@ public class ProjectController : Controller
     {
         await service.Delete(id);
     }
+
     [HttpGet]
     public async Task<List<ProjectSummaryDto>> GetAll()
     {
         var projects = await service.GelAll();
         var dto = mapper.Map<List<ProjectSummaryDto>>(projects);
+        return dto;
+    }
+
+    [HttpGet]
+    [Route("resolve/{apiKey}/environment/{environmentName}")]
+    public async Task<List<ConfigValueDto>> ResolveConfigs(string apiKey, string environmentName)
+    {
+        var configValues = await service.ResolveConfigs(apiKey, environmentName);
+        var dto = mapper.Map<List<ConfigValueDto>>(configValues);
         return dto;
     }
 }

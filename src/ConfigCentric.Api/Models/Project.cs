@@ -33,7 +33,7 @@ public class Project : Entity
     {
         environments.Add(environment);
     }
-    public string CreateApiKey()
+    private string CreateApiKey()
     {
         var apiKey = Guid.NewGuid()
             .ToString()
